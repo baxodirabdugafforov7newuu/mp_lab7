@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:html'; // allowed for web
+import 'task11.dart';
 
 // Global URL for all tasks
 const String url = 'https://jsonplaceholder.typicode.com/posts';
@@ -98,6 +99,17 @@ class MyHomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const Task910()),
+              );
+            },
+            child: const Text('Open Task 9'),
+          ),
+
+          // Task 11
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Task11()),
               );
             },
             child: const Text('Open Task 9'),
