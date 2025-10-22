@@ -421,7 +421,7 @@ class PostDetails extends StatelessWidget {
         title: const Text('Post Details'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context), // ✅ Back button
+          onPressed: () => Navigator.pop(context), // Back button
         ),
       ),
       body: Padding(
@@ -441,7 +441,7 @@ class PostDetails extends StatelessWidget {
             const SizedBox(height: 24),
             Center(
               child: ElevatedButton.icon(
-                onPressed: () => Navigator.pop(context), // ✅ Extra back button
+                onPressed: () => Navigator.pop(context), // Extra back button
                 icon: const Icon(Icons.arrow_back),
                 label: const Text('Back'),
               ),
