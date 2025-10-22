@@ -90,6 +90,18 @@ class MyHomePage extends StatelessWidget {
             },
             child: const Text('Open Task 7 and 8 (Details Navigation)'),
           ),
+          const SizedBox(height: 10),
+
+          // Task 9 and 10 as Task910
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Task910()),
+              );
+            },
+            child: const Text('Open Task 9'),
+          ),
         ],
       ),
     );
@@ -452,3 +464,107 @@ class PostDetails extends StatelessWidget {
     );
   }
 }
+
+// Task 9 and 10 as Task910
+class Task910 extends StatefulWidget {
+  const Task910({super.key});
+
+  @override
+  State<Task910> createState() => _Task910State();
+}
+
+class _Task910State extends State<Task910> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController bodyController = TextEditingController();
+
+  bool isSubmitting = false;
+
+  Future<void> submitPost() async {
+    final title = titleController.text.trim();
+    final body = bodyController.text.trim();
+
+    if (title.isEmpty || body.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in both fields.')),
+      );
+      return;
+    }
+
+    setState(() {
+      isSubmitting = true;
+    });
+
+    try {
+      const String url = 'https://reqres.in/api/posts';
+      final String payload = jsonEncode({'title': title, 'body': body});
+
+      final request = await HttpRequest.request(
+        url,
+        method: 'POST',
+        sendData: payload,
+        requestHeaders: {'Content-Type': 'application/json'},
+        withCredentials: false,
+      );
+
+      print('Response: ${request.responseText}');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Post submitted successfully.')),
+      );
+
+      titleController.clear();
+      bodyController.clear();
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to send post. Try again.')),
+      );
+    } finally {
+      setState(() {
+        isSubmitting = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Task 9 & 10 — Submit Post')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Create a New Post',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Title',
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: bodyController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Body',
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: isSubmitting ? null : submitPost,
+              child: Text(isSubmitting ? 'Submitting...' : 'Submit'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
